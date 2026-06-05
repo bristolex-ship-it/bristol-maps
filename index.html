@@ -830,7 +830,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
     -webkit-flex: 1;
     flex: 1;
     min-width: 0;
-    min-height: 0;
+    min-height: 200px;
+    height: 100%;
     z-index: 1;
   }
 
@@ -1576,9 +1577,18 @@ document.getElementById('search-input').addEventListener('input', function(e) {
   }, 300);
 });
 
-// Layout sizing — flexbox handles height; just tell Leaflet to recalc
+// Layout sizing — explicitly set height + tell Leaflet to recalc
 function recalcLayout() {
-  // Small delay ensures Safari has finished layout
+  var header = document.getElementById('header');
+  var filterBar = document.getElementById('filter-bar');
+  var footer = document.getElementById('footer');
+  var layout = document.getElementById('layout');
+  var headerH = header ? header.offsetHeight : 56;
+  var filterH = filterBar ? filterBar.offsetHeight : 60;
+  var footerH = footer ? footer.offsetHeight : 36;
+  var h = window.innerHeight - headerH - filterH - footerH;
+  if (h < 200) h = 200;
+  layout.style.height = h + 'px';
   setTimeout(function() { map.invalidateSize(); }, 100);
 }
 
